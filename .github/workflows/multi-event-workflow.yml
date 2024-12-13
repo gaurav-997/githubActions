@@ -1,0 +1,33 @@
+name: "multi event workflow"
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+
+    workflow_dispatch:
+
+jobs:
+    trigger-on-push:
+        if: github.event_name == 'push'
+        runs-on: ubuntu-latest
+        steps:
+            - name: "check files"
+              run: ls
+
+    trigger_on_pull:
+        if: github.event_name == 'pull_request'
+        runs-on: ubuntu-latest
+        steps:
+            - name: "check memory"
+              run: lsblk
+
+    trigger_on_workflow_dispatch:
+        if: github.event_name == 'workflow_dispatch'
+        runs-on: ubuntu-latest
+        steps:
+            - name: "echo workflow latest"
+              run: echo "workflow event is triggred"

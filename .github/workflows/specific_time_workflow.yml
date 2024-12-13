@@ -1,0 +1,24 @@
+name: "work flow till trigger on tuesday & thu at 10 AM"
+# for tiggring at any specific time we have to set a cron as an event
+on:
+    push:
+        branches:
+            - master
+        
+    schedule:
+        - cron: "0 10 * * 2,4"  # it will trigger on every thu & tue at 10 AM 
+
+jobs:
+    trigger_on_schedule:
+        if: github.event_name == 'schedule'
+        runs-on: ubuntu-latest
+        steps:
+            - name: "trigger on tue"
+              run: ls
+
+    trigger_on_push:
+        if: github.event_name == 'push'
+        runs-on: ubuntu-latest
+        steps:
+            - name: "check the availbale space"
+              run: df -kh

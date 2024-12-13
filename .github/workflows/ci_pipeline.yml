@@ -1,0 +1,37 @@
+name: "Reach CI pieline / workflow"  # name of the workflow
+
+on:
+    push:    # event when ever we push code on master/main it will be triggred
+        branches:
+            - master
+            - main
+
+jobs:
+    build-and-test:    # job name 
+        runs-on: ununtu-latest
+        steps:
+            - name: "setup node js"     # first stpe name
+              uses: action/setup-node@v4   # uses helps to define github action
+              with:
+                node-version: '21'
+
+            - name: "check version"   # second step name
+              run: node --version  # run helps us to run linux cmd
+
+# these pipelines will be triggred on another runner ( that will be plain raw machine) , 
+# so that will not have our project due to this we are cloning the repo into runner machine
+            - name: "clonig the repo"
+              uses: action/checkout@v2 # this action will clone repo into runner machine
+             #run: git clone <url> # we can do via this method also 
+
+            - name: "install dependencies"
+              run: npm install
+              
+            - name: "verification list all directories to check node model is installed or not "
+              run: ls -lrt | grep -i node
+
+            - name: "run test"
+              run: npm test
+
+            - name: "run build"
+              run: npm run build
